@@ -112,26 +112,7 @@ namespace UnitTestingForSystem
             sut.Title.Should().Be(expectedTitle);
         }
 
-        //DO NOT use if your class demonstration has made Years set private
-        //[Fact]
-        //public void Change_the_Years()
-        //{
-        //    //Where - Arrange setup
-        //    string Title = "SAS Lead";
-        //    SupervisoryLevel Level = SupervisoryLevel.TeamLeader;
-        //    DateTime StartDate = new DateTime(2020, 10, 24);
-        //    TimeSpan days = DateTime.Today - StartDate;
-        //    double Years = Math.Round((days.Days / 365.2), 1);
-        //    Employment sut = new Employment(Title, Level, StartDate, Years);
-        //    double expectedYears = 5.5;
-
-        //    //When - Act execution
-        //    sut.CorrectStartDate = ;
-
-        //    //Then - Assert check
-        //    sut.Years.Should().Be(expectedYears);
-        //}
-
+ 
         [Fact]
         public void Set_The_SupervisoryLevel()
         {
@@ -151,7 +132,7 @@ namespace UnitTestingForSystem
             sut.Level.Should().Be(expectedLevel);
 
         }
-
+        
         [Fact]
         public void Set_The_Correct_StartDate()
         {
@@ -178,7 +159,6 @@ namespace UnitTestingForSystem
             sut.Years.Should().Be(expectedyears);
         }
 
-
         [Fact]
         public void Create_CSV_String()
         {
@@ -197,8 +177,6 @@ namespace UnitTestingForSystem
             actual.Should().Be(expectedCSV);
 
         }
-
-
         #endregion
 
         #region Invalid Data
@@ -291,24 +269,6 @@ namespace UnitTestingForSystem
             action.Should().Throw<ArgumentNullException>();
         }
 
-        ////DO NOT use if your class demonstration has made Years set private
-        ////[Fact]
-        ////public void Directly_Change_Years_Throws_Exception()
-        ////{
-        ////    //Where - Arrange setup
-        ////    string Title = "SAS Lead";
-        ////    SupervisoryLevel Level = SupervisoryLevel.TeamMember;
-        ////    DateTime StartDate = DateTime.Today;
-        ////    double Years = 0;
-        ////    Employment sut = new Employment(Title, Level, StartDate, Years);
-
-        ////    //When - Act execution
-        ////    Action action = () => sut.Years = -5.5;
-
-        ////    //Then - Assert check
-        ////    action.Should().Throw<ArgumentOutOfRangeException>().WithMessage("*-5.5*");
-        ////}
-
         [Fact]
         public void Set_The_SupervisoryLevel_Throws_Exception()
         {
@@ -347,5 +307,6 @@ namespace UnitTestingForSystem
 
         }
         #endregion
+
     }
 }

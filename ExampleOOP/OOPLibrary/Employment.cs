@@ -14,6 +14,8 @@ namespace OOPLibrary
         //private string _title = ""; // DON'T DO THAT
         private string _title = string.Empty;
         private double _years;
+        private SupervisoryLevel _supervisoryLevel;
+        private DateTime _startDate;
         #endregion
 
         #region Properties
@@ -21,12 +23,12 @@ namespace OOPLibrary
         public string Title
         {
             get { return _title; }
-            set { 
+            set {
                 if (string.IsNullOrWhiteSpace(value))
                 {
                     throw new ArgumentNullException("Title must be provided.");
                 }
-                _title = value.Trim(); 
+                _title = value.Trim();
             }
         }
 
@@ -42,10 +44,35 @@ namespace OOPLibrary
                 _years = value;
             }
         }
-        public DateTime StartDate { get; set; }
+        public DateTime StartDate
+        {
+            get { return _startDate; }
+            private set
+            {
+                if (value > DateTime.Today)
+                {
+                    throw new ArgumentException($"Time {value} is in the future.");
+                }
+                _startDate = value;
 
-        // Auto-Implemented Property, no additional values needed!
-        public SupervisoryLevel Level { get; set; }
+                // update _years
+                TimeSpan days = DateTime.Today - _startDate;
+                Years = Math.Round((days.Days / 365.2), 1);
+            }
+        }
+
+        public SupervisoryLevel Level
+        {
+            get { return _supervisoryLevel; }
+            private set
+            {
+                if (!Enum.IsDefined(typeof(SupervisoryLevel), value))
+                {
+                    throw new ArgumentException($"Supervisory level {value} is invalid.");
+                }
+                _supervisoryLevel = value;
+            }
+        }
         #endregion
 
         #region Constructors
@@ -65,13 +92,36 @@ namespace OOPLibrary
             Title = title;
             Level = level;
             StartDate = startDate;
-            Years = years;
+            if (years == 0.0)
+            {
+                TimeSpan days = DateTime.Today - startDate;
+                Years = Math.Round((days.Days / 365.2), 1);
+            }
+            else
+            {
+                Years = years;
+            }
         }
 
         #endregion
 
         #region Methods
-
+        public void SetEmploymentResponsibilityLevel(SupervisoryLevel level)
+        {
+            Level = level;
+        }
+        public void CorrectStartDate(DateTime startDate)
+        {
+            StartDate = startDate;
+        }
+        public override string ToString()
+        {
+            return string.Format("{0},{1},{2},{3}", 
+                                _title, 
+                                _supervisoryLevel.ToString(),
+                                _startDate.ToString("MMM. dd yyyy"),
+                                _years);
+        }
         #endregion
     }
 }

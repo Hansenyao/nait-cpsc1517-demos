@@ -10,6 +10,7 @@ namespace OOPLibrary
     {
         Entry,              // 0
         TeamMember,
+        TeamLeader,
         Supervisor,
         DepartmentHead,
         Owner
