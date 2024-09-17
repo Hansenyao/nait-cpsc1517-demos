@@ -116,11 +116,14 @@ namespace OOPLibrary
         }
         public override string ToString()
         {
+            return $"{Title},{Level},{StartDate.ToString("MMM. dd yyyy")},{Years}";
+            /* DON't access data members directly
             return string.Format("{0},{1},{2},{3}", 
                                 _title, 
                                 _supervisoryLevel.ToString(),
                                 _startDate.ToString("MMM. dd yyyy"),
                                 _years);
+            */
         }
         #endregion
     }
