@@ -1,10 +1,16 @@
 using ExampleOOPWebApp.Components;
+using ExampleOOPWebApp.Components.Models;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+// Add database context
+builder.Services.AddDbContext<EventsContext>(opt => 
+    opt.UseInMemoryDatabase("DailyEventsList"));
 
 var app = builder.Build();
 
