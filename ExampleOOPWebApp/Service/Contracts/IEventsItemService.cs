@@ -1,6 +1,6 @@
-﻿using ExampleOOPWebApp.Components.Models;
+﻿using ExampleOOPWebApp.Models;
 
-namespace ExampleOOPWebApp.Components.Service.Contracts
+namespace ExampleOOPWebApp.Service.Contracts
 {
     public interface IEventsItemService
     {

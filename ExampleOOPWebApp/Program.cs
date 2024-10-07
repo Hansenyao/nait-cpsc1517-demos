@@ -1,5 +1,7 @@
 using ExampleOOPWebApp.Components;
-using ExampleOOPWebApp.Components.Models;
+using ExampleOOPWebApp.Models;
+using ExampleOOPWebApp.Service;
+using ExampleOOPWebApp.Service.Contracts;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +13,10 @@ builder.Services.AddRazorComponents()
 // Add database context
 builder.Services.AddDbContext<EventsContext>(opt => 
     opt.UseInMemoryDatabase("DailyEventsList"));
+//builder.Services.AddSingleton<IEventsItemService, EventsItemService>();   //Failed
+builder.Services.AddScoped<IEventsItemService, EventsItemService>();
+
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 

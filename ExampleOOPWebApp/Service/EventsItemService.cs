@@ -1,8 +1,8 @@
-﻿using ExampleOOPWebApp.Components.Models;
-using ExampleOOPWebApp.Components.Service.Contracts;
-using System.Data.Entity;
+﻿using ExampleOOPWebApp.Models;
+using ExampleOOPWebApp.Service.Contracts;
+using Microsoft.EntityFrameworkCore;
 
-namespace ExampleOOPWebApp.Components.Service
+namespace ExampleOOPWebApp.Service
 {
     public class EventsItemService : IEventsItemService
     {

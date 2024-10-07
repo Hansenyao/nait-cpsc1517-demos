@@ -1,4 +1,4 @@
-﻿namespace ExampleOOPWebApp.Components.Models
+﻿namespace ExampleOOPWebApp.Models
 {
     public class EventsSeedData
     {

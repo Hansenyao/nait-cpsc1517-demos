@@ -1,7 +1,9 @@
 ﻿@page "/dailyevents"
+@rendermode InteractiveServer
+@attribute [StreamRendering]
 
-@using ExampleOOPWebApp.Components.Models;
-@using ExampleOOPWebApp.Components.Service.Contracts;
+@using ExampleOOPWebApp.Models;
+@using ExampleOOPWebApp.Service.Contracts;
 @inject IEventsItemService eventItemService;
 
 <h3>Daily Events</h3>
