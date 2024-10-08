@@ -1,0 +1,12 @@
+﻿<h3>Control Lists and Slides</h3>
+
+<select class="form-select">
+    @foreach (var item in _myOptions)
+    {
+        <option>@item</option>
+    }
+</select>
+
+@code {
+    private List<string> _myOptions = ["One", "Two", "Three" ];
+}

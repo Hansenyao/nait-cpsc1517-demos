@@ -1,0 +1,32 @@
+﻿<h3>ControlTextBoxes</h3>
+
+<div class="form-floating mb-3">
+    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" @bind="_email" />
+    <label for="floatingInput">Email address</label>
+</div>
+<div class="form-floating mb-3">
+    <input type="password" class="form-control" id="floatingPassword" placeholder="Password" @bind="_password" />
+    <label for="floatingPassword">Password</label>
+</div>
+<div class="form-floating mb-3">
+    <input type="date" class="form-control" id="floatingDate" placeholder="Enter a Date" @bind="_dateInput" />
+    <label for="floatingDate">Date</label>
+</div>
+<button class="btn btn-primary my-2" type="submit" @onclick="TextProcessing">Submit Data</button>
+
+@if (!string.IsNullOrWhiteSpace(_feedback))
+{
+    <p>@_feedback</p>
+}
+
+@code {
+    private string _email = string.Empty;
+    private string _password = string.Empty;
+    private DateTime _dateInput;
+    private string _feedback = string.Empty;
+
+    private void TextProcessing()
+    {
+        _feedback = $"Email: {_email}, Password: {_password}, Date: {_dateInput}";
+    }
+}
