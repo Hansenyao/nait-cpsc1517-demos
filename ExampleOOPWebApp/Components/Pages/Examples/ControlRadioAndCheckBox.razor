@@ -1,16 +1,47 @@
-﻿<h3>ControlRadioAndCheckBox</h3>
+﻿<h3>Control Radio and CheckBoxes</h3>
 
+@*Radio Buttons
+    Name in InputRadioGroup and each InputRadio must match to bind the value correctly.
+    This is the Microsoft Component for RadioGroups
+*@
+<label class="form-label">Microsoft Component Example</label>
+<br />
 <InputRadioGroup Name="mealRadio" @bind-Value="selectedMeal">
-    @foreach(var item in mealOptions)
+    @foreach(var meal in mealOptions)
     {
-        <InputRadio Name="mealRadio" Value="@item">@($" {item}")</InputRadio>
+        <InputRadio Name="mealRadio" Value="@meal" class="form-check-input"/>
+        <span class="form-check-label">@($" {meal}")</span>
         <br/>
     }
-
 </InputRadioGroup>
+<br/>
+
+@*Radio Group from Bootstrap
+    Make sure the name matches for each form-check group
+    Not easy to bind (not suree totally how) to a C# variable
+*@
+<div class="form-check">
+    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDeafult1"/>
+    <label class="form-check-label" for="flexRadioDefault1">
+        Default radio
+    </label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDeafult2" />
+    <label class="form-check-label" for="flexRadioDefault2">
+        Default checked radio
+    </label>
+</div>
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" id="exampleCheckbox" @bind="acceptanceCheckbox" />
+    <label class="form-check-label" for="exampleCheckbox">
+        I accept the terms of service.
+    </label>
+</div>
 
 @code {
     private List<string> mealOptions = ["Breakfast", "Second Breakfast", "Lunch", "Dinner"];
     private string selectedMeal;
+    private bool acceptanceCheckbox = false;
 
 }
