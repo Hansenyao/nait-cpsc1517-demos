@@ -6,7 +6,32 @@
         <option>@item</option>
     }
 </select>
+<br/>
+<label class="form-label">
+    Select favourite vacation spot:
+    <input style="text" @bind="vacationSpot" list="VacationChoices" class="custom-select"/>
+    <datalist id="VacationChoices">
+        <!--<option>Select a value ...</option>-->
+        @foreach(var item in VacationSpotList)
+        {
+            <option value="@item"/>
+        }
+    </datalist>
+</label>
+<br/>
+<label for="MyRange" class="form-label" >Range Test</label>
+<input type="range" class="form-range" id="MyRange" min="0" max="10" step="1" @bind="range" />
 
 @code {
     private List<string> _myOptions = ["One", "Two", "Three" ];
+    private string vacationSpot = string.Empty;
+    private List<string> VacationSpotList = new();
+    private int range = 5;
+
+    protected override void OnInitialized()
+    {
+        VacationSpotList.Add("California");
+        VacationSpotList.Add("Europe");
+        VacationSpotList.Add("Canada");
+    }
 }

@@ -1,0 +1,16 @@
+﻿<h3>ControlRadioAndCheckBox</h3>
+
+<InputRadioGroup Name="mealRadio" @bind-Value="selectedMeal">
+    @foreach(var item in mealOptions)
+    {
+        <InputRadio Name="mealRadio" Value="@item">@($" {item}")</InputRadio>
+        <br/>
+    }
+
+</InputRadioGroup>
+
+@code {
+    private List<string> mealOptions = ["Breakfast", "Second Breakfast", "Lunch", "Dinner"];
+    private string selectedMeal;
+
+}
