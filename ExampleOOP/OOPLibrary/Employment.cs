@@ -137,6 +137,23 @@ namespace OOPLibrary
                                   DateTime.Parse(dataValue[2]), 
                                   double.Parse(dataValue[3]));
         }
+
+        //static int test;
+        //bool test2 = int.TryParse("3", out test);
+        public static bool TryParse(string item, out Employment result)
+        {
+            result = null;
+            try
+            {
+                //use code I've already written
+                result = Parse(item);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         #endregion
     }
 }
