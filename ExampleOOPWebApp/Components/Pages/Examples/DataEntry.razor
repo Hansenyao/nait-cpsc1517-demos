@@ -55,7 +55,7 @@
         </div>
         <div class="col">
             <div class="form-floating mb-2">
-                <input type="text" class="form-control" id="employmentDate" @bind="empStartDate" />
+                <input type="date" class="form-control" id="employmentDate" @bind="empStartDate" />
                 <label for="employmentDate">Start Date</label>
             </div>
         </div>
@@ -83,6 +83,22 @@
         <div class="col text-center">
             <button type="submit" class="btn btn-primary rounded-pill" @onclick="OnCollect">
                 Submit Employment
+            </button>
+        </div>
+        <div class="col text-center">
+            <button class="btn btn-warning rounded-pill" @onclick="ClearForm">
+                Clear Form
+            </button>
+        </div>
+        <div class="col text-center">
+            <button class="btn btn-warning rounded-pill">
+                <a href="employmentreport">Report Via Link</a>
+            </button>
+        </div>
+        <div class="col text-center">
+            <button class="btn btn-warning rounded-pill"
+                    @onclick="GoToReport">
+                Report Via Method
             </button>
         </div>
     </div>

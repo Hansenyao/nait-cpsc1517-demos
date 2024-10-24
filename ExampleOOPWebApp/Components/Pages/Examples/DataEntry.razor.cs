@@ -1,4 +1,6 @@
-﻿using OOPLibrary;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
+using OOPLibrary;
 
 namespace ExampleOOPWebApp.Components.Pages.Examples
 {
@@ -15,6 +17,14 @@ namespace ExampleOOPWebApp.Components.Pages.Examples
         private double empYears = 0.0;
         private Employment employment = null;
 
+        // injected service into your application
+        // injected services they need to be coded as preperties, typically auto-implemented.
+        [Inject]
+        public IJSRuntime JSRuntime { get; set; }
+
+        //Inject a service to navigate between pages
+        [Inject]
+        private NavigationManager NavigationManager { get; set; }
         private void OnCollect()
         {
             feedback = string.Empty;
@@ -28,7 +38,7 @@ namespace ExampleOOPWebApp.Components.Pages.Examples
                 // Title must present, must have at least character
                 // start date cannot be in the future
                 // years cannot be less than zero
-            if (string.IsNullOrEmpty(empTitle))
+            if (string.IsNullOrWhiteSpace(empTitle))
             {
                 errorMsgs.Add("Title is required.");
             }
@@ -44,9 +54,6 @@ namespace ExampleOOPWebApp.Components.Pages.Examples
 
             if (errorMsgs.Count == 0)
             {
-                // at this point the data is acceptable based off the form validation
-                feedback = $"Entered data is {empTitle}, {empStartDate}, {empLevel}, {empYears}";
-
                 // we can now process the data
 
                 // if you are using a class to collect and hold your data
@@ -60,13 +67,19 @@ namespace ExampleOOPWebApp.Components.Pages.Examples
                     //the instance will throw an exception!
 
                     employment = new Employment(empTitle, empLevel, empStartDate, empYears);
-                    
+
                     //Write the class data as a csv string to a csv text file
                     //Required:
                     //  a) know the file location
                     //  b) have a technique to write to a file
                     //      1) SteamReading/StreamWriter
                     //      2) use System.IO.File methods
+                    string fileName = @"Data/Employments.csv";
+                    string line = $"{employment}\n";
+                    File.AppendAllText(fileName, line);
+
+                    // at this point the data is acceptable based off the form validation
+                    feedback = $"Entered data: {empTitle}, {empStartDate.ToString("MMM. dd yyyy")}, {empLevel}, {empYears}\n\n Data saved to file.";
 
                 }
                 catch (ArgumentNullException ex) 
@@ -89,6 +102,30 @@ namespace ExampleOOPWebApp.Components.Pages.Examples
                 {
                     errorMsgs.Add($"System error: {GetInnerException(ex).Message}");
                 }
+            }
+        }
+        private void GoToReport()
+        {
+            NavigationManager.NavigateTo("employmentreport");
+        }
+        private async void ClearForm()
+        {
+            // issue as SimpleConsoleFormatterOptions prompt dialogue to
+            // the user to confirm the form clearing
+            object[] messageLine = new object[] { "Clearing with tlose all unsaved data. Are you sure you want to clear the form?" };
+            if (await JSRuntime.InvokeAsync<bool>("confirm", messageLine))
+            {
+                feedback = "";
+                errorMsgs.Clear();
+                empTitle = string.Empty;
+                empStartDate = DateTime.Today;
+                empLevel = SupervisoryLevel.Entry;
+                empYears = 0.0;
+
+                // Re-render page with new datas (in an async mode)
+                await InvokeAsync(StateHasChanged);
+                // If not in an async function use:
+                //StateHasChanged();
             }
         }
 
