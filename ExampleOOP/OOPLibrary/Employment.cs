@@ -125,6 +125,18 @@ namespace OOPLibrary
                                 _years);
             */
         }
+        public static Employment Parse(string item)
+        {
+            string[] dataValue = item.Split(',');
+            if (dataValue.Length != 4)
+            {
+                throw new FormatException($"Invalid record format: {item}");
+            }
+            return new Employment(dataValue[0], 
+                                  (SupervisoryLevel)Enum.Parse(typeof(SupervisoryLevel), dataValue[1]), 
+                                  DateTime.Parse(dataValue[2]), 
+                                  double.Parse(dataValue[3]));
+        }
         #endregion
     }
 }
