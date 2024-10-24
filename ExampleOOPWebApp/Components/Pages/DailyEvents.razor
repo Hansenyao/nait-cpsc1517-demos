@@ -1,0 +1,69 @@
+﻿@page "/dailyevents"
+@using ExampleOOPWebApp.Models
+@using ExampleOOPWebApp.Service.Contracts
+@inject IEventsItemService dailyEventService
+
+<PageTitle>Daily Events</PageTitle>
+@rendermode InteractiveServer
+
+<h3>Daily Events (ToDo: @dailyEvents.Count(item => !item.IsComplete))</h3>
+
+@if (dailyEvents == null) {
+    <p>Loading...</p>
+}
+else {
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>IsComplete</th>
+                <th>Remark</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in dailyEvents) {
+                <tr>
+                    <td>@item.Id.ToString()</td>
+                    <td>@item.Name</td>
+                    <td><input type="checkbox" @bind="item.IsComplete" /></td>
+                    <td>@item.Remark</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<label class="form-label">
+    Event Item Name (Necessary):
+    <input type="text" placeholder="Name" @bind="newEventName" />
+</label>
+<label class="form-label">
+    Event Item Remark (Optional):
+    <input type="text" placeholder="Remark" @bind="newEventRemark" />
+</label>
+<button @onclick="AddEvent">Add Event</button>
+
+@code {
+    private IList<EventsItem> dailyEvents;
+    private string? newEventName;
+    private string? newEventRemark;
+
+    protected override async Task OnInitializedAsync() {
+        dailyEvents = await dailyEventService.GetEventItemsAsync();
+    }
+
+    private async void AddEvent()
+    {
+        if (string.IsNullOrWhiteSpace(newEventName))
+        {
+            return;
+        }
+
+        var eventItem = new EventsItem { Name = newEventName, Remark = newEventRemark };
+        await dailyEventService.AddEventItemAsync(eventItem);
+        // Reset
+        newEventName = newEventRemark = string.Empty;
+        // Refresh event list
+        dailyEvents = await dailyEventService.GetEventItemsAsync();
+    }
+}
