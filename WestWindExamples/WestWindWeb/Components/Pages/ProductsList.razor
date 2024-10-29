@@ -1,0 +1,37 @@
+﻿@page "/products"
+<PageTitle>Products List</PageTitle>
+
+<h3>Products</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product ID</th>
+            <th>Product Name</th>
+            <th>Category</th>
+            <th>Supplier</th>
+            <th>Unit Price</th>
+            <th>Discontinued</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var product in products) 
+        {
+            <tr>
+                <td>@product.ProductID</td>
+                <td>@product.ProductName</td>
+                <td>@product.Category.CategoryName</td>
+                <td>@product.Supplier.CompanyName</td>
+                <td class="text-end">@product.UnitPrice.ToString("C")</td>
+                <td class="text-center">
+                    <input type="checkbox" checked="@product.Discontinued" disabled/>
+                </td>
+                <!--<td><input type="checkbox" @bind={product.Discontinued} disabled /></td>-->
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+
+}
