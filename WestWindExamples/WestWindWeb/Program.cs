@@ -13,7 +13,9 @@ builder.Services.AddRazorComponents()
 builder.Services.AddDbContext<WestWindContext>(options => options.UseSqlServer
     (builder.Configuration.GetConnectionString("WWDB")));
 
-builder.Services.AddScoped<ProductServices, ProductServices>();
+// Each serviece need to 
+builder.Services.AddScoped<ProductServices>();
+builder.Services.AddScoped<CategoryServices>();
 
 var app = builder.Build();
 

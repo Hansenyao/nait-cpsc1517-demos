@@ -29,6 +29,10 @@ namespace WestWindLibrary.BLL
                 .ThenInclude(y => y.Address).ToList();
             //return _context.Products.ToList();
         }
+        public List<Product> GetProducts_ByCategory(int categoryId)
+        {
+            return _context.Products.Where(x => x.CategoryID.Equals(categoryId)).ToList();
+        }
         #endregion // Quries
     }
 }
