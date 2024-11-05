@@ -2,6 +2,7 @@
 #nullable disable
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
@@ -18,8 +19,13 @@ public partial class Product
     [Key]
     public int ProductID { get; set; }
 
-    [Required]
-    [StringLength(40)]
+    [Display(Name = "Prodcut Name")]
+    //[Required]
+    [Required(ErrorMessage = "You must enter a {0}")]  // {0} means Display Name
+    //[MaxLength(40, ErrorMessage = "{0} cannot be longers than {1} characters.")]
+    //[MinLength(5, ErrorMessage = "{0} cannot be less than {2} characters.")]
+    //[StringLength(40)]
+    [StringLength(40, ErrorMessage = "{0} must be bewteen {2} and {1} characters.", MinimumLength = 5)]
     public string ProductName { get; set; }
 
     public int SupplierID { get; set; }

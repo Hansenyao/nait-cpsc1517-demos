@@ -22,21 +22,21 @@ namespace WestWindWeb.Components.Pages
             // Every time you connect or use one your servieces you need a try/catch
             try
             {
-                categories = _categoryServices.GetCategories(); 
+                categories = _categoryServices.GetCategories();
             }
             catch (Exception ex)
             {
                 errorMsgs.Add($"Data exception: {ex.Message}");
             }
 
-            //try
-            //{
-            //    products = _productServices.GetAllProducts();
-            //}
-            //catch (Exception ex)
-            //{
-            //    errorMsgs.Add($"Data exception: {ex.Message}");
-            //}
+            try
+            {
+                products = _productServices.GetAllProducts();
+            }
+            catch (Exception ex)
+            {
+                errorMsgs.Add($"Data exception: {ex.Message}");
+            }
             base.OnInitialized();
         }
         private void LoadProductsByCateory()

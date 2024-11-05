@@ -1,0 +1,32 @@
+﻿@page "/product"
+<PageTitle>Prodcut CRUD</PageTitle>
+
+<h3>Product CRUD</h3>
+
+@if (feedback.Length > 0)
+{
+    <div class="alert alert-danger">
+        <p>@feedback</p>
+    </div>
+}
+
+<EditForm OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit" Model="@product">
+    <DataAnnotationsValidator />
+    <div class="row">
+        <div class="col form-group">
+            <label for="productName">Product Name</label>
+            <InputText id="productName" class="form-control" @bind-Value="product.ProductName"/>
+            <ValidationMessage For="()=>product.ProductName" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col form-group">
+            <label for="unitPrice">Unit Price</label>
+            <InputNumber id="unitPrice" class="form-control" @bind-Value="product.UnitPrice"/>
+            <ValidationMessage For=@(()=>product.UnitPrice) />
+        </div>
+    </div>
+    <div class="row">
+        <button type="submit" class="btn btn-primary mt-2">Submit</button>
+    </div>
+</EditForm>
