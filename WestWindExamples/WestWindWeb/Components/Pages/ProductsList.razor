@@ -39,6 +39,7 @@
                         <th>Supplier</th>
                         <th>Unit Price</th>
                         <th>Discontinued</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -52,6 +53,9 @@
                             <td class="text-end">@product.UnitPrice.ToString("C")</td>
                             <td class="text-center">
                                 <input type="checkbox" checked="@product.Discontinued" disabled/>
+                            </td>
+                            <td>
+                                <button class="btn btn-secondary rounded-pill" onclick="@(()=>EditProduct(product.ProductID))">Edit</button>
                             </td>
                         </tr>
                     }

@@ -13,6 +13,8 @@ namespace WestWindWeb.Components.Pages
         private bool noProducts;
 
         [Inject]
+        NavigationManager _navigationManager { get; set; }
+        [Inject]
         ProductServices _productServices { get; set; }
         [Inject]
         CategoryServices _categoryServices { get; set; }
@@ -35,7 +37,7 @@ namespace WestWindWeb.Components.Pages
             }
             catch (Exception ex)
             {
-                errorMsgs.Add($"Data exception: {ex.Message}");
+                errorMsgs.Add($"Data exception: {GetInnerException(ex).Message}");
             }
             base.OnInitialized();
         }
@@ -60,8 +62,20 @@ namespace WestWindWeb.Components.Pages
             }
             catch (Exception ex)
             {
-                errorMsgs.Add($"Data exception: {ex.Message}");
+                errorMsgs.Add($"Data exception: {GetInnerException(ex).Message}");
             }
+        }
+
+        private void EditProduct(int productId)
+        {
+            _navigationManager.NavigateTo($"/product/{productId}");
+        }
+
+        private Exception GetInnerException(Exception ex)
+        {
+            while (ex.InnerException != null)
+                ex = ex.InnerException;
+            return ex;
         }
     }
 }
