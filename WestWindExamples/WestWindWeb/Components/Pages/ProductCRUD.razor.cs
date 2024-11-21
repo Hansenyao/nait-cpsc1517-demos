@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.JSInterop;
 using WestWindLibrary.BLL;
 using WestWindLibrary.Entities;
 
@@ -9,7 +11,8 @@ namespace WestWindWeb.Components.Pages
         private Product product = new Product();
         private string feedback = string.Empty;
         private List<string> errorMsgs = [];
-        private bool isNew = false;
+        private bool isNew = true;
+        private EditContext editContext;
         //
         private List<Supplier> suppliers = [];
         private List<Category> categories = [];
@@ -23,6 +26,10 @@ namespace WestWindWeb.Components.Pages
         CategoryServices categoryServices { get; set; }
         [Inject]
         ProductServices productServices { get; set; }
+        [Inject]
+        public IJSRuntime JSRuntime { get; set; }
+        [Inject]
+        public NavigationManager navigationManager { get; set; }
 
         protected override void OnInitialized()
         {
@@ -45,9 +52,16 @@ namespace WestWindWeb.Components.Pages
                     }
                     else
                     {
-                        isNew = true;
+                        isNew = false;
                     }
                 }
+                else
+                {
+                    isNew = true;
+                }
+
+                //Must pass the EditContext the model being used -- product
+                editContext = new EditContext(product);
             }
             catch (Exception ex)
             {
@@ -120,6 +134,91 @@ namespace WestWindWeb.Components.Pages
         private void OnInvalidSubmit()
         {
             feedback = "This is invalid!";
+        }
+        private async void DeleteProduct()
+        {
+            bool isDeleted = false;
+            object[] messageLine = new object[] { $"Are you sure you want to delete product {product.ProductName} (ID:{product.ProductID})?" }; 
+            if (await JSRuntime.InvokeAsync<bool>("confirm", messageLine))
+            {
+                try
+                {
+                    feedback = string.Empty;
+                    errorMsgs.Clear();
+
+                    int rowAffected = productServices.Product_PhysicalDelete(product);
+                    if (rowAffected == 0)
+                    {
+                        errorMsgs.Add($"Product {product.ProductName} (ID: {product.ProductID}) has not been deleted. Please check to see if the product still exists in the database.");
+                    }
+                    else
+                    {
+                        feedback = $"Product {product.ProductName} (ID: {product.ProductID}) has been successfully deleted.";
+                        // Option to stays on the same page and clear the product.
+                        isDeleted = true;
+                        navigationManager.NavigateTo("/product", true);
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    errorMsgs.Add(GetInnerException(ex).Message);
+                }
+
+                // Try to do logic deleting
+                if (!isDeleted)
+                {
+                    errorMsgs.Clear();
+                    messageLine = new object[] { $"{product.ProductName} (ID:{product.ProductID}) could not be delete. Would you like to discontinued it?" };
+                    if (await JSRuntime.InvokeAsync<bool>("confirm", messageLine))
+                    {
+                        try
+                        {
+                            int rowsAffected = productServices.Product_LogicalDelete(product);
+                            if (rowsAffected == 0)
+                            {
+                                errorMsgs.Add($"{product.ProductName} (ID:{product.ProductID}) has not been discontinued. Please check to see if the product still exists in the database.");
+                            }
+                            else
+                            {
+                                feedback = $"{product.ProductName} (ID:{product.ProductID}) was successfully discontinued.";
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            errorMsgs.Add(GetInnerException(ex).Message);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void ReactivateProduct()
+        {
+            feedback = string.Empty;
+            errorMsgs.Clear();
+
+            if (editContext.Validate())
+            {
+                try
+                {
+                    product.Discontinued = false;
+                    int rowAffected = productServices.Product_UpdateProduct(product);
+                    if (rowAffected == 0)
+                    {
+                        errorMsgs.Add($"Product {product.ProductName} (ID: {product.ProductID}) has not been reactivated. Please check to see it still exists in the database");
+
+                    }
+                    else
+                    {
+                        feedback = $"Product {product.ProductName} (ID: {product.ProductID}) has been successfully reactivated.";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errorMsgs.Add(GetInnerException(ex).Message);
+                }
+            }
         }
 
         private Exception GetInnerException(Exception ex)

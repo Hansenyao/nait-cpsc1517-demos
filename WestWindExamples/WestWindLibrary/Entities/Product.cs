@@ -27,20 +27,25 @@ public partial class Product
     //[StringLength(40)]
     [StringLength(40, ErrorMessage = "{0} must be bewteen {2} and {1} characters.", MinimumLength = 5)]
     public string ProductName { get; set; }
-
+    [Display(Name = "Supplier")]
+    [Range(1, int.MaxValue, ErrorMessage = "You must select a {0}.")]
     public int SupplierID { get; set; }
-
+    [Display(Name = "Category")]
+    [Range(1, int.MaxValue, ErrorMessage = "You must select a {0}.")]
     public int CategoryID { get; set; }
-
-    [Required]
-    [StringLength(20)]
+    [Display(Name = "Quantity Per Unit")]
+    [Required(ErrorMessage = "You must enter a {0}.")]
+    [StringLength(20, ErrorMessage = "{0} cannot be more than {1} characters.")]
     public string QuantityPerUnit { get; set; }
-
+    [Display(Name = "Minimum Oerder Quantity")]
     public short? MinimumOrderQuantity { get; set; }
-
+    [Display(Name = "Unit Price")]
+    [Required(ErrorMessage = "You must enter a {0}.")]
+    [Range(0.0, double.MaxValue, ErrorMessage = "{0} must be greater than {1}.")]
     [Column(TypeName = "money")]
     public decimal UnitPrice { get; set; }
-
+    [Display(Name = "Units On Order")]
+    [Range(0, int.MaxValue, ErrorMessage = "{0} must be greater than {1}.")]
     public int UnitsOnOrder { get; set; }
 
     public bool Discontinued { get; set; }
