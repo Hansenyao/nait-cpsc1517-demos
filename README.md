@@ -1,2 +1,2 @@
 # CPSC1517-demos
-All demo projects for CPSC1517 at NAIT
+All assignment projects for CPS1517 (Introduction to Application Development) course at NAIT.
